@@ -7,6 +7,7 @@
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
     <!-- Added link to the jQuery Library -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <script src="assets/javascript/game.js"></script>
 </head>
 
 <body>
@@ -18,34 +19,37 @@
         <!-- Your characters -->
         <div id="yourCharacters">
             <h2>Your character</h2> 
-            <div class="character">
-                <h4>Obi-Wan Kenobi</h4>
-                <img src="assets/images/obi_wan.jpg">
-                <p>120</p>
+            <div id="characters">
+                <div class="character">
+                    <h4>Obi-Wan Kenobi</h4>
+                    <img src="assets/images/obi_wan.jpg">
+                    <p>120</p>
+                </div>
+    
+                <div class="character">
+                    <h4>Luke Skywalker</h4>
+                    <img src="assets/images/luke.jpg">
+                    <p>100</p>
+                </div>
+    
+                <div class="character">
+                    <h4>Darth Sidious</h4>
+                    <img src="assets/images/darth.jpg">
+                    <p>150</p>
+                </div>
+    
+                <div class="character">
+                    <h4>Darth Maul</h4>
+                    <img src="assets/images/maul.png">
+                    <p>180</p>
+                </div>      
             </div>
-
-            <div class="character">
-                <h4>Luke Skywalker</h4>
-                <img src="assets/images/luke.jpg">
-                <p>100</p>
-            </div>
-
-            <div class="character">
-                <h4>Darth Sidious</h4>
-                <img src="assets/images/darth.jpg">
-                <p>150</p>
-            </div>
-
-            <div class="character">
-                <h4>Darth Maul</h4>
-                <img src="assets/images/maul.png">
-                <p>180</p>
-            </div>      
         </div>
 
         <!-- Enemies -->
-        <div id="enemies">
+        <div>
             <h2>Enemies Available To Attack</h2>
+            <div id="enemies"></div>
         </div>
 
         <!-- attack buttom -->
@@ -55,8 +59,9 @@
         </div>
 
         <!-- Defender -->
-        <div id="defender">
+        <div>
             <h2>Defender</h2>
+            <div id="defenders"></div>
         </div>
 
     </div>
