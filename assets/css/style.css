@@ -1,0 +1,61 @@
+body {
+    background-image: url("../images/background.jpg");
+}
+
+h2 {
+    font-size: 2em;
+    clear: both;
+}
+
+#header {
+    width: 100%;
+    height: 5em;
+}
+
+#gameTitle {
+    float:right;
+    font-size: 3em;
+    margin-right: 2em;
+}
+
+/* your character style */
+#yourCharacters {
+    width: 100%;
+    height: 12em;
+}
+
+.character {
+    position: relative;
+    width: 12em;
+    height: 8em;
+    float: left;
+    border: green 2px solid;
+    text-align: center;
+}
+
+.character img {
+    display: block;
+    position: absolute;
+    left: 1.5em;
+    width: 9em;
+    height: 6em;
+}
+
+.character p {
+    position: absolute;
+    bottom: 0;
+    left: 5.25em;
+}
+
+/* enemies style */
+.enemies {
+    width: 100%;
+    height: 12em;
+}
+
+/* fight section */
+#fightSection {
+    width: 100%;
+    height: 12em;
+}
+/* defender */
