@@ -9,7 +9,7 @@ h2 {
 
 #header {
     width: 100%;
-    height: 5em;
+    height: 4em;
 }
 
 #gameTitle {
@@ -50,7 +50,7 @@ h2 {
 /* enemies style */
 #enemies {
     width: 100%;
-    height: 10em;
+    height: 9em;
 }
 
 .enemy {
@@ -60,15 +60,16 @@ h2 {
 /* fight section */
 #fightSection {
     width: 100%;
-    height: 6em;
+    height: 4em;
 }
 
 /* defenders style */
 #defenders {
     width: 100%;
-    height: 10em;
+    height: 9em;
 }
 
 .defender {
     background: black;
+    color: white;
 }
