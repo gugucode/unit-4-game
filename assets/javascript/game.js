@@ -1,4 +1,4 @@
-
+// define characters' info here
 var obi_wan = {
     name: "Obi-Wan Kenobi",
     img_location: "assets/images/obi_wan.jpg",
@@ -31,136 +31,151 @@ var maul = {
     counter_attack_power: 20,
 };
 
-
-characters_array = [obi_wan,luke,darth,maul];
+// define all global variable 
+var characters_array = [obi_wan,luke,darth,maul];
 var my_character;
 var my_defender;
-var my_hp = -1;
-var defender_hp = -1;
-var my_att_power = -1;
+var my_hp;
+var defender_hp;
+var my_att_power;
+var noDefender = true;
+var gameOver = false;
 
-
+// determine which character that player selects
 function findCharacter(name){
     for(var i=0; i<characters_array.length; i++){
         if(characters_array[i].name === name){
             return characters_array[i];
         }
-    };
+    }
 }
 
-function printHealthPoint(selector,character){
-    $(selector).text(character["health_points"]);
-}
-
+// print all characters
 function printAllCharacters(){
+    $("#characters").empty();
     $.each(characters_array,function(index,val){
-        // console.log("hi");
-        var cha_elem = $("<div>");
-        cha_elem.addClass("character");
-        
-        var name = $("<h4>");
-        name.text(val.name);
-
+        //define the elements to display the characters
+        var cha_elem = $("<div class='character'></div>");
+        var name = $("<h4>"+val.name+"</h4>");
         var image = $("<img>");
         image.attr("src",val.img_location)
-
-        var p = $("<p>");
-        p.text(val.health_points);
+        var p = $("<p>"+val.health_points+"</p>");
         
+        //add the characters to main page
         cha_elem.append(name,image,p);
         $("#characters").append(cha_elem);
     })
 }
 
+// print enemies
+function printEnemy(my_character){
+    var all_characters = $(".character");
+    var character = $(my_character);
+
+    $.each(all_characters, function(index,val){
+        if(! character.is(val)){
+            $(val).attr("class","enemy");
+            $("#enemies").append($(val));
+        }
+    });
+}
+
+// function to handle html when defender loses
+function handleDefenderLose(){
+    $(".defender").remove();
+    var p1 = "";
+    var bnt = "";
+    if($(".enemy").length === 0){ //if you defeat all enemies
+        p1 = "<p>You WON!!! GAME OVER!!!</p>";
+        bnt = "<input type='button' value='restart' class='restart'>";
+        gameOver = true;
+    }else{ 
+        $(".character p").text(my_hp);
+        p1 = "<p>You have defeated " + my_defender.name + ", you can choose to fight another enemy.</p>";
+    }            
+    noDefender = true;
+    $("#result").html(p1+bnt);
+}
+
+// function to handle html when player loses
+function handlePlayerLose(){
+    var p1 = "<p>You been defeated...GAME OVER!!!</p>";
+    var bnt = "<input type='button' value='restart' class='restart'>";
+    $("#result").html(p1+bnt);
+    $("#defenders").empty();
+    noDefender = true;
+    gameOver = true;
+}
+
+// function to handle attack when no one loses or wins
+function handleAttack(old_att_power){
+    $(".character p").text(my_hp);
+    $(".defender p").text(defender_hp);
+
+    var p1 = "<p>You attacked " + my_defender.name + " for " + old_att_power + " damage.</p>";
+    var p2 = "<p>"+my_defender.name + " attacked you back for "+ my_defender.counter_attack_power + " damage.</p>";
+    $("#result").html(p1 + p2);
+}
+
 $(document).ready(function(){
+    // print all characters
     printAllCharacters();
 
+    // Handle click event when one character is clicked 
     $("#characters").on("click",".character", function(){
+        //save my character's info
         my_character = findCharacter($(this).find("h4").text());
         my_hp =my_character.health_points;
         my_att_power = my_character.attack_power;
    
-        var all_characters = $(".character");
-        var character = $(this);
-        $("#characters").empty();
-        $("#characters").append(character);
-        
-        $.each(all_characters, function(index,val){
-            if(! character.is(val)){
-                $(val).attr("class","enemy");
-                $("#enemies").append(val);
-            }
-        });
+        //print the enemies
+        printEnemy(this);
     });
 
+    // Handle click event when one enemy is clicked
     $("#enemies").on("click", ".enemy",function(){
-        if($(".defender").length === 0){
+        if(noDefender){ //if there is no defender, define it and display
             my_defender = findCharacter($(this).find("h4").text());
             defender_hp = my_defender.health_points;
-            // console.log(my_enemy);
-            var enemy = $(this);
-            $(this).remove();
-            $(enemy).attr("class","defender");
-            $("#defenders").append(enemy);
+            noDefender = false;
+
+            //change enemy to defender 
+            $(this).attr("class","defender");
+            $("#defenders").append(this);
+            $("#result").empty();
         }
     });
 
+    // Handle when player attacks
     $("#attackBnt").on("click",function(){
-        if($(".defender").length === 0){
-            var p1 = $("<p>");
-            p1.text("No enemy here.")
-            $("#result").empty();
-            $("#result").append(p1);
+        if(noDefender){ //if no defender, cannot attack
+            if(!gameOver){ //if game is not over yet
+                $("#result").html("<p>No enemy here.</p>");
+            }
         }else{
+            // reduce player's and defender's health point  
             my_hp -= my_defender.counter_attack_power;
             defender_hp -= my_att_power;
+
+            //increase player's attack power
             var old_att_power = my_att_power;
             my_att_power += my_character.attack_power;
 
-            if(defender_hp <= 0){
-                $(".defender").remove();
-                var p1;
-                var bnt;
-                if($(".enemy").length === 0){
-                    p1 = $("<p>");
-                    p1.text("You WON!!! GAME OVER!!!");
-                    bnt = $("<input>");
-                    bnt.attr("class","restart").attr("type","button").attr("value","restart");
-                }else{
-                    $(".character p").text(my_hp);
-                    p1 = $("<p>");
-                    p1.text("You have defeated " + my_defender.name + ", you can choose to fight another enemy.")
-                }
-                
-                $("#result").empty();
-                $("#result").append(p1,bnt);
-
-            }else if(my_hp <= 0){
-                var p1 = $("<p>");
-                p1.text("You been defeated...GAME OVER!!!");
-                var bnt = $("<input>");
-                bnt.attr("type","button").attr("value","restart").attr("class","restart");
-                $("#result").empty();
-                $("#result").append(p1,bnt);
-                
-            }else{
-                $(".character p").text(my_hp);
-                $(".defender p").text(defender_hp);
-    
-                var p1 = $("<p>");
-                p1.text("You attacked " + my_defender.name + " for " + old_att_power + " damage.");
-                var p2 = $("<p>");
-                p2.text(my_defender.name + " attacked you back for "+ my_defender.counter_attack_power + " damage.");
-                $("#result").empty();
-                $("#result").append(p1,p2);
+            if(defender_hp <= 0){ //if defender loses the game
+                handleDefenderLose();
+            }else if(my_hp <= 0){ //if player loses the game
+                handlePlayerLose();               
+            }else{ // else print health points and attack detail
+                handleAttack(old_att_power);
             }
         }
     });
 
+    // When restart button is clicked, restart game.
     $("#result").on("click",".restart",function(){
-        console.log("restart")
-        $("#characters").empty();
         printAllCharacters();
         $("#result").empty();
+        noDefender = true;
+        gameOver = false;
     });
 })
