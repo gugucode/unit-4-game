@@ -7,7 +7,7 @@ In this game, player can pick their Star War character and attack the enemies. E
 3. Player can click on the "Attack" button to attack the enemy.
 4. The web page will print out the health points of player's character and its enemy after each attack.
 5. Player can hit "restart" buttom to restart game when he/she wins or loses.
-6. Player can win the game after they defeat all enemies and lose his/her health point is equal to or less than 0. 
+6. Player can win the game after he/she defeats all enemies and lose when his/her health point is equal to or less than 0. 
 
 ## Getting Started
 
